@@ -108,7 +108,7 @@
 			$('#responses').sheetrock({
 				url: mySpreadsheet,
 				labels: ['Context', 'Quotes'],
-				query: "select B,C where B contains '" + query + "' order by C desc"
+				query: "select B,C where B contains '" + query + "' order by C desc",
 				callback: function() {
 					$("#loading").hide();
 				}
