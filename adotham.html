@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1">
 	<meta name="description" content="Darrensapalo.GitHub.io : My own github website.">
 	<!-- Latest compiled and minified CSS -->
@@ -48,19 +48,25 @@
 			</p>
 			
 			<form id="form">
+
 				<div class="row">
 					<div class="form-inline">
 						<div class="form-group form-group-lg">
-							
-							<label> Context<BR />
-								<input class="form-control" id="tags" name="tags" placeholder="">
-							</label>
-							<input class="btn btn-lg btn-primary" type="submit" value="Generate response">
-
+							<label> Context
+							</label><BR />
+							<input type="text" class="form-control" id="tags" name="tags" placeholder="">
+							<div class="clear" style="margin-top: 0.5rem"></div>
+							<small class="text-muted">If left blank, show all responses.</small>
 						</div>
 					</div>
-					<small class="text-muted">If left blank, show all responses.</small>
 				</div>
+				<div class="clear" style="margin-top: 1rem"></div>
+				<div class="row">
+					<input class="btn btn-lg btn-primary btn-block" type="submit" value="Generate response/s">
+
+				</div>
+
+
 				
 				
 			</form>
