@@ -165,6 +165,15 @@
 			location.reload();
 		}
 
+		window.blogspotTitle = function (entry, tokens) {
+			if (entry.title == "") return "Untitled";
+			return entry.title;
+		}
+
+		window.blogspotBody = function (entry, tokens) {
+			if (entry.contentSnippet == "") return "";
+			return entry.contentSnippet;
+		}
 
 		window.loadData = function() {
 
@@ -175,10 +184,12 @@
 				layoutTemplate: "<div class='row'>{entries}</div>",
 				tokens: {
 					checkImage: checkImage,
-					saveData: saveData
+					saveData: saveData,
+					checkTitle: blogspotTitle,
+					checkBody: blogspotBody
 				},
 				limit: +params['limit'] || 4,
-				entryTemplate: '<div class="col-md-3">{checkImage}<h3>{title}</h3> <a href="{url}">{date}</a> {saveData}<BR /><p>{shortBodyPlain}</p></div>',
+				entryTemplate: '<div class="col-md-3">{checkImage}<h3>{checkTitle}</h3> <a href="{url}">{date}</a> {saveData}<BR /><p>{checkBody}</p></div>',
 			}, record)
 
 			var facebookUrl = 'https://fbrss.com/feed/d5589adeb1bd17dcfe308985dc04480fb8d7140a.xml'
