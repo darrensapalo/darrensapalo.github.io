@@ -58,6 +58,7 @@
 			<p>An overview of her Blogspot, Facebook, and Instagram </p>
 			<a href="#" class="btn btn-lg btn-primary" onclick="limitLoadedData(4)">Latest 4 posts</a>
 			<a href="#" class="btn btn-lg" onclick="limitLoadedData(16)">Latest 16 posts</a>
+			<a href="#" class="btn btn-lg" onclick="reset()">Clear history</a>
 		</div>
 		<div class="row" style="display: none;" >
 			<div class="col-md-4">
@@ -149,6 +150,21 @@
 			return '';
 		}
 
+		window.saveData = function(entry, tokens) { 
+			window.value = entry;
+			timestamp = localStorage.getItem(entry.link)
+			if (timestamp == null){
+				localStorage.setItem(entry.link, moment())
+				return '<small style="color: red">New</small>';
+			}
+			return '';
+		}
+
+		window.reset = function(){
+			localStorage.clear();
+			location.reload();
+		}
+
 
 		window.loadData = function() {
 
@@ -158,22 +174,24 @@
 			$("#blogspot-feed").rss(blogspotUrl, {
 				layoutTemplate: "<div class='row'>{entries}</div>",
 				tokens: {
-					checkImage: checkImage
+					checkImage: checkImage,
+					saveData: saveData
 				},
 				limit: +params['limit'] || 4,
-				entryTemplate: '<div class="col-md-3">{checkImage}<h3>{title}</h3> <a href="{url}">{date}</a><BR /><p>{shortBodyPlain}</p></div>',
-			})
+				entryTemplate: '<div class="col-md-3">{checkImage}<h3>{title}</h3> <a href="{url}">{date}</a> {saveData}<BR /><p>{shortBodyPlain}</p></div>',
+			}, record)
 
 			var facebookUrl = 'https://fbrss.com/feed/d5589adeb1bd17dcfe308985dc04480fb8d7140a.xml'
 			$("#facebook-feed").html('');
 			$("#facebook-feed").rss(facebookUrl, {
 				layoutTemplate: "<div class='row'>{entries}</div>",
 				tokens: {
-					checkImage: checkImage
+					checkImage: checkImage,
+					saveData: saveData
 				},
 				limit: +params['limit'] || 4,
-				entryTemplate: '<div class="col-md-3"><a href="{url}">{date}</a><BR />{checkImage}<p>{shortBodyPlain}</p></div>',
-			})
+				entryTemplate: '<div class="col-md-3"><a href="{url}">{date}</a> {saveData}<BR />{checkImage}<p>{shortBodyPlain}</p></div>',
+			}, record)
 
 
 
@@ -182,11 +200,18 @@
 			$("#instagram-feed").rss(instagramUrl, {
 				layoutTemplate: "<div class='row'>{entries}</div>",
 				tokens: {
-					checkImage: checkImage
+					checkImage: checkImage,
+					saveData: saveData
 				},
 				limit: +params['limit'] || 4,
-				entryTemplate: '<div class="col-md-3"><a href="{url}">{date}</a><img class="img-responsive" src="{teaserImageUrl}"><BR /></div>',
-			})
+				entryTemplate: '<div class="col-md-3"><a href="{url}">{date}</a> {saveData}<BR /><img class="img-responsive" src="{teaserImageUrl}"><BR /></div>',
+				
+			}, record)
+
+		}
+
+		function record(entry, a) {
+			
 
 		}
 
