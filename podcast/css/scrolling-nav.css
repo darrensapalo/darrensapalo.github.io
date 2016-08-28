@@ -35,22 +35,26 @@ of those sections to manage the look and feel of the site. */
     padding-top: 150px;
     text-align: center;
     background: #fff;
+    padding-bottom: 75px;
 }
 
 .about-section {
     padding-top: 150px;
     text-align: center;
     background: #eee;
+    padding-bottom: 75px;
 }
 
 .services-section {
     padding-top: 150px;
     text-align: center;
     background: #fff;
+    padding-bottom: 75px;
 }
 
 .contact-section {
     padding-top: 150px;
     text-align: center;
     background: #eee;
+    padding-bottom: 75px;
 }
