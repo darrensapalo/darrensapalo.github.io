@@ -61,7 +61,13 @@
 			$("#result").html(sb)
 
 			sb = "public func == (lhs: " + modelName + ", rhs: " + modelName + ") -> Bool {\n"
+			sb += "if lhs.id != nil && rhs.id != nil {\n"
 		    sb += "return lhs.id == rhs.id\n"
+			sb += "}\n"
+			sb += "else\n"
+			sb += "{\n"
+			sb += "return lhs === rhs\n"
+			sb += "}\n"
 			sb += "}\n"
 
 			$("#equatable").html(sb)
