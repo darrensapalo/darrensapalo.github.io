@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Dungeons and Dragons community finder</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 720px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+      	height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+  	<div class="container">
+	    <div id="map"></div>
+	    <div style="font-size: 12px; font-family: Helvetica Neue, Arial; padding: 0.5em">
+	    	<p>
+				<h1>Dungeons and Dragons </h1>
+	    		Add your DND group to the map by <a onclick="addGroup()" href="#">clicking here</a>.
+	    	</p>
+	    	<p>
+	    		DND Community finder by <a onclick="linkedin()" href="https://www.linkedin.com/in/darren-karl-sapalo-3a384495/">Darren Sapalo</a>. You can find me on <a onclick="twitter()" href="https://twitter.com/darrensapalo">Twitter</a> or <a onclick="github()" href="https://github.com/darrensapalo">Github</a>.
+	    	</p>
+	    	<p>Talk about it in the DND Facebook group <a onclick="dndgroup()" href="https://www.facebook.com/groups/somethingyellow/">here</a>.</p>
+	    </div>
+    </div>
+    <script>
+
+    function addGroup(){
+
+    	ga('send', 'event', "DND", "Add Group", {
+		    hitCallback: function() {
+		      window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSe4LewE7IC2SNb7ErhKmaHu08az6HweUu2quru6b8og58OT6w/viewform?usp=sf_link"
+		    }
+		  });
+    }
+
+    function dndgroup(evt){
+    	ga('send', 'event', "Contact", "DND Group");
+    }
+
+    function twitter(evt){
+    	ga('send', 'event', "Contact", "Twitter");
+    }
+
+    function github(evt){
+    	ga('send', 'event', "Contact", "Github");
+    }
+
+    function linkedin(evt){
+    	ga('send', 'event', "Contact", "Linked In");
+    }
+
+    var windows = []
+    var map;
+    function loadOnMap(groups){
+
+    	// Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = groups
+        	.filter(function(item){
+        		return item.markerlabel
+        	})
+        	.map(function(item) {
+        		console.log(item)
+    	var lat = parseFloat(item.Latitude)
+      	var lng = parseFloat(item.Longitude)
+      	
+          var marker = new google.maps.Marker({
+
+            position: {lat: lat, lng: lng},
+            label: item.markerlabel, //labels[i % labels.length],
+            title: item['What\'s your DND group\'s name?']
+          });
+
+          marker.model = item;
+          return marker;
+        });
+
+
+
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+        markers.forEach(function(elem){
+        	var infowindow = new google.maps.InfoWindow({
+			    content: produceContent(elem.model)
+			  });
+
+        	windows.push(infowindow);
+		  
+		  elem.addListener('click', function() {
+		  	ga('send', 'event', "Infobox", "Open", elem.model.title);
+		    infowindow.open(map, elem);
+		  });
+
+        });
+
+        map.addListener('click', function() {
+        	
+        	ga('send', 'event', "Infobox", "Close via Map tap");
+
+      	windows.forEach(function(elem){
+      		elem.close();
+      	});
+      });
+
+    }
+
+      function initMap() {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: 14.5540755, lng: 121.0312852}
+        });
+
+        
+      
+      }
+
+      function produceContent(model) {
+      	var title, description, play, url, date;
+
+      	if (model) {
+
+      		if (model['What\'s your DND group\'s name?'])
+      			title = model['What\'s your DND group\'s name?']
+      		else
+      			title = "No title found"
+      		
+      		if (model['What is your DND group\'s description?'])
+      			description = model['What is your DND group\'s description?']
+      		else
+      			description = "No description found";
+      	
+      		if (model['When do you play?']) 
+      			play = model['When do you play?']
+      		else
+      			play = ""
+
+      		if (model['Facebook post link'])
+      			url = model['Facebook post link']
+      		else
+      			url = "https://www.facebook.com/groups/somethingyellow/";
+      	
+      		if (model.lastUpdated)
+      			date = model.lastUpdated;
+      		else
+      			date = model.Timestamp;
+      	}
+
+      	/*
+      	
+      	*/
+      	var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 class="firstHeading">' + title + '</h1>'+
+      '<div id="bodyContent">'+
+      '<p>' + description + '</p>'+
+      '<p><a href="' + url + '">'+
+      'Contact the group</a></p><p><small>'+
+      'last updated ' + date + '</small></p>'+
+      '</div>'+
+      '</div>';
+      	return contentString;
+      }
+
+      function initTableTop() {
+		  Tabletop.init( { key: 'https://docs.google.com/spreadsheets/d/1OEQakaTgdVbSZ-l7e9R6h_PG3oJX19q9hMOO42ymv0I/pubhtml?gid=1611020998&single=true',
+		                   callback: function(data, tabletop) { 
+		                       loadOnMap(data);
+		                   },
+		                   simpleSheet: true } )
+		}
+		window.addEventListener('DOMContentLoaded', initTableTop)
+
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-81854171-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACsgCcBwtA-NuzMiNmCjYRu-QatWmlqRs&callback=initMap">
+    </script>
+  </body>
+</html>
