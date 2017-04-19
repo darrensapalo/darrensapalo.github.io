@@ -28,13 +28,13 @@
 	    <div id="map"></div>
 	    <div style="font-size: 12px; font-family: Helvetica Neue, Arial; padding: 0.5em">
 	    	<p>
-				<h1>Dungeons and Dragons </h1>
-	    		Add your DND group to the map by <a onclick="addGroup()" href="#">clicking here</a>.
+				<h1>Dungeons & Dragons Philippines</h1>
+	    		Add your local DND group to the map <a onclick="addGroup()" href="#">here</a>.
 	    	</p>
 	    	<p>
-	    		DND Community finder by <a onclick="linkedin()" href="https://www.linkedin.com/in/darren-karl-sapalo-3a384495/">Darren Sapalo</a>. You can find me on <a onclick="twitter()" href="https://twitter.com/darrensapalo">Twitter</a> or <a onclick="github()" href="https://github.com/darrensapalo">Github</a>.
+	    		DND Community finder by <a onclick="linkedin()" href="#">Darren Sapalo</a>. You can find me on <a onclick="twitter()" href="#">Twitter</a> or <a onclick="github()" href="#">Github</a>.
 	    	</p>
-	    	<p>Talk about it in the DND Facebook group <a onclick="dndgroup()" href="https://www.facebook.com/groups/somethingyellow/">here</a>.</p>
+	    	<p>Talk about this in the DND Facebook group <a onclick="dndgroup()" href="#">here</a>.</p>
 	    </div>
     </div>
     <script>
@@ -49,19 +49,35 @@
     }
 
     function dndgroup(evt){
-    	ga('send', 'event', "Contact", "DND Group");
+    	ga('send', 'event', "Contact", "DND Group", {
+		    hitCallback: function() {
+		      window.location.href = "https://www.facebook.com/groups/somethingyellow/"
+		    }
+		  });
     }
 
     function twitter(evt){
-    	ga('send', 'event', "Contact", "Twitter");
+    	ga('send', 'event', "Contact", "Twitter", {
+		    hitCallback: function() {
+		      window.location.href = "https://twitter.com/darrensapalo"
+		    }
+		  });
     }
 
     function github(evt){
-    	ga('send', 'event', "Contact", "Github");
+    	ga('send', 'event', "Contact", "Github", {
+		    hitCallback: function() {
+		      window.location.href = "https://github.com/darrensapalo"
+		    }
+		  });
     }
 
     function linkedin(evt){
-    	ga('send', 'event', "Contact", "Linked In");
+    	ga('send', 'event', "Contact", "Linked In", {
+		    hitCallback: function() {
+		      window.location.href = "https://www.linkedin.com/in/darren-karl-sapalo-3a384495/"
+		    }
+		  });
     }
 
     var windows = []
@@ -178,6 +194,7 @@
       '<h1 class="firstHeading">' + title + '</h1>'+
       '<div id="bodyContent">'+
       '<p>' + description + '</p>'+
+      '<p>' + play + '</p>'+
       '<p><a href="' + url + '">'+
       'Contact the group</a></p><p><small>'+
       'last updated ' + date + '</small></p>'+
