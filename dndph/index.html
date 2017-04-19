@@ -29,15 +29,40 @@
 	    <div style="font-size: 12px; font-family: Helvetica Neue, Arial; padding: 0.5em">
 	    	<p>
 				<h1>Dungeons & Dragons Philippines</h1>
-	    		Add your local DND group to the map <a onclick="addGroup()" href="#">here</a>.
+	    		A DND Community finder. Add your local DND group to the map <a onclick="addGroup()" href="#">here</a>.
 	    	</p>
 	    	<p>
-	    		DND Community finder by <a onclick="linkedin()" href="#">Darren Sapalo</a>. You can find me on <a onclick="twitter()" href="#">Twitter</a> or <a onclick="github()" href="#">Github</a>.
+	    		 <h3>Feedback</h3>
+	    		 <div id="feedback">
+	    		 	<a onclick="like()" href="#">I like this app, it's useful</a> ---- or ---- <a onclick="meh()" href="#">Meh, not really that interesting</a>
+	    		 </div>
 	    	</p>
-	    	<p>Talk about this in the DND Facebook group <a onclick="dndgroup()" href="#">here</a>.</p>
+	    	<p style="margin-top: 2em">Like it? Talk about this in the DND Facebook group <a onclick="dndgroup()" href="#">here</a>.</p>
+
+	    	<p><em>Made by <a onclick="linkedin()" href="#">Darren Karl Sapalo</a> on April 2017. You can find me on <a onclick="twitter()" href="#">Twitter</a> or <a onclick="github()" href="#">Github</a>.</em></p>
 	    </div>
     </div>
     <script>
+
+
+
+	function like(){
+
+    	ga('send', 'event', "Feedback", "Like", {
+		    hitCallback: function() {
+		      document.getElementById("feedback").innerHTML = "Thanks!"
+		    }
+		  });
+    }
+
+    function meh(){
+
+    	ga('send', 'event', "Feedback", "Meh", {
+		    hitCallback: function() {
+		      document.getElementById("feedback").innerHTML = "Thanks!"
+		    }
+		  });
+    }
 
     function addGroup(){
 
