@@ -1,7 +1,34 @@
-# My work
+# darrensapalo.github.io
 
-## Things I care about
+## Project setup
+```
+npm install
+```
 
-1. **Uber and Grab Drivers advancing their education** through podcast materials that can be redistributed via bluetooth rather than WiFi, because internet usage is expensive in 3rd world countries.
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-2. Dungeons and dragons as a creative outlet and a safe sandbox for young and old players alike to **learn character development**.
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Run your unit tests
+```
+npm run test:unit
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
