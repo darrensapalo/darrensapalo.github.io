@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RARE Prototype</title>
+
+  <script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
+
+  <div id='map'></div>
+  <pre id="coordinates" class="coordinates"></pre>
+
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZHNhcGFsbyIsImEiOiJjbHdtbXh0bWkxeXdmMmpucjMxdnFidDRuIn0.8K4RxISvCOL8HHOX0rzEhA';
+    const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      center: [121.0659527532016, 14.201014811243454], // starting position [lng, lat]
+      style: 'mapbox://styles/dsapalo/clwmn04k600ur01po02njfegs',
+      zoom: 15, // starting zoom
+    });
+
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .coordinates {
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      position: absolute;
+      bottom: 40px;
+      left: 10px;
+      padding: 5px 10px;
+      margin: 0;
+      font-size: 11px;
+      line-height: 18px;
+      border-radius: 3px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <script>
+    const for_sale = [
+      {
+        label: "1260 Conservation Ave, Calamba, Laguna 4026",
+        geo: [121.062295, 14.209723],
+        icon: 'bank'
+      },
+      {
+        label: "Calamba, Laguna 4027",
+        geo: [121.065210, 14.207223],
+        icon: 'bank'
+      }
+    ];
+
+    const coordinates = document.getElementById('coordinates');
+
+    const marker = new mapboxgl.Marker({
+      draggable: true
+    })
+      .setLngLat([121.06655216281126, 14.199888313902449])
+      .addTo(map);
+
+    function onDragEnd() {
+      const lngLat = marker.getLngLat();
+      coordinates.style.display = 'block';
+      coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+    }
+
+    marker.on('dragend', onDragEnd);
+
+    map.on('load', () => {
+      map.resize();
+      // Add an image to use as a custom marker
+      map.loadImage(
+        'https://i.imgur.com/tfAyLOX.png',
+        (error, image) => {
+          if (error) throw error;
+          map.addImage('custom-marker', image);
+          // Add a GeoJSON source with 2 points
+
+          let feats = [...for_sale].map((i) => ({
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': i.geo
+            },
+            'properties': {
+              'title': i.label,
+              'icon': i.icon,
+            }
+          }));
+
+          map.addSource('points', {
+            'type': 'geojson',
+            'data': {
+              'type': 'FeatureCollection',
+              'features': feats
+            }
+          });
+
+          // Add a symbol layer
+          map.addLayer({
+            'id': 'feats',
+            'type': 'symbol',
+            'source': 'points',
+            'layout': {
+              'icon-image': [
+                'coalesce',
+                ['image', ['get', 'icon']],
+                // If no image with the name above exists, show the
+                // "rocket" image instead.
+                ['image', 'town-hall']
+              ],
+              // get the title name from the source's "title" property
+              'text-field': ['get', 'title'],
+              'text-font': [
+                'Open Sans Semibold',
+                'Arial Unicode MS Bold'
+              ],
+              'text-offset': [0, 0.50],
+              'text-anchor': 'top'
+            }
+          });
+
+
+        }
+      );
+    });
+
+  </script>
+</body>
+
+</html>
